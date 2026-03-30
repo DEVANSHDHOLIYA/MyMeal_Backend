@@ -6,15 +6,6 @@ import cors from 'cors';
 import { indexRoute } from './src/routes/index.routes.js';
 const app= express();
 
-app.use(express.json());
-app.use('/api/v1',indexRoute);
-connectDB().then(()=>{
-    console.log('Connected to MongoDB');
-    SERVER();
-}).catch((err)=>{
-    console.error('Error connecting to MongoDB', err);
-});
-
 app.use(cors({
     origin: [
       "http://localhost:5173",
@@ -24,6 +15,15 @@ app.use(cors({
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   }))
+app.use(express.json());
+app.use('/api/v1',indexRoute);
+connectDB().then(()=>{
+    console.log('Connected to MongoDB');
+    SERVER();
+}).catch((err)=>{
+    console.error('Error connecting to MongoDB', err);
+});
+
 
 
 const SERVER = async () =>{
