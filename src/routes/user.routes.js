@@ -15,12 +15,7 @@ _Router.use(auth);
 
 _Router.route("/get_vendor").post(userController.getvendordata);
 
-_Router
-  .route("/giverating")
-  .post(
-    validate([stringvalidation("rating"), stringvalidation("review")]),
-    userController.giverating,
-  );
+
 
 _Router
   .route("/getvendorsubscription/:vendor_id")

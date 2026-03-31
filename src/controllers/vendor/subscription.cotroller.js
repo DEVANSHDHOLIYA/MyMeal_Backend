@@ -187,7 +187,7 @@ const getsubscriberinfo = async (req, res, next) => {
     const subsciptiondata = await usersubscription.find({ subscription_id: { $in: ids } }).populate("user_id","name email").populate("subscription_id","duration price");
     if(!subsciptiondata){
         return res.status(HTTP.NOT_FOUND).json({
-            success:false,
+            success:false,  
             message:"Subscribers not found"
         })
     }
