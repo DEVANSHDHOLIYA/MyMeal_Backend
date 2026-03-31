@@ -93,6 +93,7 @@ const addusersubscription = async (req, res, next) => {
     await usersubscription.findOne({
       user_id: req.user_id,
       subscription_id: req.body.subscription_id,
+      duration: req.body.duration,
     })
   ) {
     return res.status(HTTP.BAD_REQUEST).json({
@@ -162,18 +163,44 @@ const addusersubscription = async (req, res, next) => {
     user_id: req.user_id,
     subscription_id: req.body.subscription_id,
     ispaid: true,
+    duration: planduration,
     startdate: startdate,
     enddate: planenddate,
+    ispaused: false,
+    pausedate: null,
   });
   return res.status(HTTP.SUCCESS).json({
     success: true,
     message: "Subscription Bought successfully",
   });
 };
+
+const getsubscriberinfo = async (req, res, next) => {
+    const vendorsubdata=await vendorsubscription.find({ vendor_id: req.user_id });
+    if(!vendorsubdata){
+        return res.status(HTTP.NOT_FOUND).json({
+            success:false,
+            message:"Subscribers not found"
+        })
+    }
+    const ids= vendorsubdata.map((item)=>item._id);
+    const subsciptiondata = await usersubscription.find({ subscription_id: { $in: ids } }).populate("user_id","name email").populate("subscription_id","duration price");
+    if(!subsciptiondata){
+        return res.status(HTTP.NOT_FOUND).json({
+            success:false,
+            message:"Subscribers not found"
+        })
+    }
+    return res.status(HTTP.SUCCESS).json({
+        success:true,
+        data:subsciptiondata
+    })
+}
 export default {
   Addsubscription,
   showsubscription,
   updatesubscription,
   getsubscription,
   addusersubscription,
+  getsubscriberinfo,
 };

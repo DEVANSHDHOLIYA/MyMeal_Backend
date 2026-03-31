@@ -34,4 +34,8 @@ _Router
   .route("/buysubscription")
   .post(subscriptionCotroller.addusersubscription);
 
+_Router
+  .route("/getsubscriberinfo")
+  .get(subscriptionCotroller.getsubscriberinfo);
+
 export const subscriptionrouter = _Router;

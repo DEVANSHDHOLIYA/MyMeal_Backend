@@ -8,7 +8,11 @@ const usersubscriptionschema = new mongoose.Schema({
     },
     subscription_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'subscription',    
+        ref: 'vendorsubscription',    
+        required: true,
+    },
+    duration: {
+        type: String,
         required: true,
     },
     ispaid: {
@@ -24,6 +28,13 @@ const usersubscriptionschema = new mongoose.Schema({
     enddate:{
         type: Date,
         required: true,
+    },
+    ispaused:{
+        type:Boolean,
+        default:false,
+    },
+    pausedate:{
+        type: Date,
     }
 
 });
