@@ -4,6 +4,7 @@ import User from "../../models/user.js";
 import Vendor from "../../models/vendor.js";
 import Rating from "../../models/vendor/vendorrating.js";
 import vendorsubscription from "../../models/vendor/vendorsubscription.js";
+import usersubscription from "../../models/user/usersubscription.js";
 const getvendordata = async (req, res, next) => {
   const vendordata = await Vendor.find({});
   if (!vendordata) {
@@ -55,4 +56,17 @@ const getvendorsubscription = async (req, res, next) => {
     data: { subscription, vendordata },
   });
 };
-export default { getvendordata, getvendorsubscription };
+
+const getsubscription = async (req, res, next) => {
+  const subscription = await usersubscription.findOne({ user_id: req.user_id }).populate("subscription_id","duration price").populate("user_id","name email");
+  if (!subscription) {
+    return res.status(HTTP.NOT_FOUND).json({
+      success: false,
+      message: "Subscription not found",
+    });
+  }
+  console.log(subscription);
+}
+
+
+export default { getvendordata, getvendorsubscription,getsubscription };

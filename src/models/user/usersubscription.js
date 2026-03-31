@@ -11,6 +11,10 @@ const usersubscriptionschema = new mongoose.Schema({
         ref: 'vendorsubscription',    
         required: true,
     },
+    description:{
+        type: String,
+         required: true,
+    },
     duration: {
         type: String,
         required: true,

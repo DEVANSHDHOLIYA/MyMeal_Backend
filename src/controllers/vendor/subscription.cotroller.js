@@ -164,6 +164,7 @@ const addusersubscription = async (req, res, next) => {
     subscription_id: req.body.subscription_id,
     ispaid: true,
     duration: planduration,
+    description: vendorSub.description,
     startdate: startdate,
     enddate: planenddate,
     ispaused: false,

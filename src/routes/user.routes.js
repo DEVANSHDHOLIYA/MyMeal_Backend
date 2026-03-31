@@ -23,4 +23,8 @@ _Router
     validate([optionalResourceIds("vendor_id", "param")]),
     userController.getvendorsubscription,
   );
+
+_Router
+  .route("/getsubscription")
+  .get(userController.getsubscription);
 export const userrouter = _Router;
