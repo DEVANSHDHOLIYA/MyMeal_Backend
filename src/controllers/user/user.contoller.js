@@ -65,7 +65,10 @@ const getsubscription = async (req, res, next) => {
       message: "Subscription not found",
     });
   }
-  console.log(subscription);
+  return res.status(HTTP.SUCCESS).json({
+    success: true,
+    data: subscription,
+  });
 }
 
 

@@ -113,7 +113,7 @@ const addusersubscription = async (req, res, next) => {
   const price = req.body.price;
   const [userdata, vendorSub] = await Promise.all([
     User.findById(req.user_id, { email: 1,name:1 }),
-    vendorsubscription.findById(req.body.subscription_id, { vendor_id: 1 }),
+    vendorsubscription.findById(req.body.subscription_id, { vendor_id: 1 ,description:1}),
   ]);
   if (!vendorSub)
     return res.status(HTTP.NOT_FOUND).json({ message: "Plan not found" });
@@ -158,7 +158,6 @@ const addusersubscription = async (req, res, next) => {
   
   await sendBuySubscriptionEmail(subscriptiondata);
   await sendboughtsubscriptionmail(boughtsubscriptiondata);
-
   await usersubscription.create({
     user_id: req.user_id,
     subscription_id: req.body.subscription_id,
