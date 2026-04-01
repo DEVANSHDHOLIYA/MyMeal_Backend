@@ -70,6 +70,28 @@ const getsubscription = async (req, res, next) => {
     data: subscription,
   });
 }
+const pausesubscription = async (req, res, next) => {
+  const subscription = await usersubscription.findOne({ user_id: req.user_id, subscription_id: req.body.subscription_id });
+  if (!subscription) {
+    return res.status(HTTP.NOT_FOUND).json({
+      success: false,
+      message: "Subscription not found",
+    });
+  }
+  if(subscription.ispaused==true){
+    return res.status(HTTP.BAD_REQUEST).json({
+      success: false, 
+      message: "Subscription is already paused",
+    });
+
+  }
+  const date=new Date();
+  await usersubscription.updateOne({ user_id: req.user_id, subscription_id: req.body.subscription_id }, { $set: { ispaused: true, pausedate: date } });
+  return res.status(HTTP.SUCCESS).json({
+    success:true,
+    message: "Subscription Paused Successfully",
+  });
+}
 
 
-export default { getvendordata, getvendorsubscription,getsubscription };
+export default { getvendordata, getvendorsubscription,getsubscription ,pausesubscription};

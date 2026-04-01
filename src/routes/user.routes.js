@@ -27,4 +27,11 @@ _Router
 _Router
   .route("/getsubscription")
   .get(userController.getsubscription);
+
+_Router
+  .route("/pausesubscription")
+  .post(
+    validate([stringvalidation("subscription_id")]),
+    userController.pausesubscription,
+  );
 export const userrouter = _Router;

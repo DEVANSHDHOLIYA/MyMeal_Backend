@@ -156,8 +156,12 @@ const addusersubscription = async (req, res, next) => {
     }),
   };
   
+  try {
   await sendBuySubscriptionEmail(subscriptiondata);
   await sendboughtsubscriptionmail(boughtsubscriptiondata);
+} catch (emailError) {
+  console.error("Email failed to send, but subscription was created:", emailError);
+}
   await usersubscription.create({
     user_id: req.user_id,
     subscription_id: req.body.subscription_id,
