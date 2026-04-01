@@ -79,9 +79,10 @@ const pausesubscription = async (req, res, next) => {
     });
   }
   if(subscription.ispaused==true){
+    await usersubscription.updateOne({ user_id: req.user_id, subscription_id: req.body.subscription_id }, { $set: { ispaused: true, pausedate: null } });
     return res.status(HTTP.BAD_REQUEST).json({
       success: false, 
-      message: "Subscription is already paused",
+      message: "Subscription Resumed Successfully",
     });
 
   }
