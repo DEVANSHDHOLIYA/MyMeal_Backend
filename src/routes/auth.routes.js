@@ -25,7 +25,7 @@ _Router
 _Router
   .route("/user/login")
   .post(
-    validate([emailValidation(), passwordvalidation()]),
+    validate([emailValidation()]),
     authController.login,
   );
 
@@ -45,7 +45,7 @@ _Router
 _Router
   .route("/vendor/login")
   .post(
-    validate([emailValidation(), passwordvalidation()]),
+    validate([emailValidation()]),
     authController.vendorlogin,
   );
 
