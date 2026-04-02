@@ -11,10 +11,32 @@ app.use('/api/v1',indexRoute);
 connectDB().then(()=>{
     console.log('Connected to MongoDB');
     SERVER();
+
 }).catch((err)=>{
     console.error('Error connecting to MongoDB', err);
 });
- app.use((req, res, next) => {
+
+ 
+
+
+const SERVER = async () =>{
+  app.use((req, res, next) => {
+    console.log(
+      `Incoming -> Method: [${req.method}] - Url: [${req.url}] - IP: [${
+        req.socket.remoteAddress
+      }] - Time: [${new Date()}]`
+    );
+
+    res.on("finish", () => {
+      console.log(
+        `Finish -> Method: [${req.method}] - Url: [${req.url}] - IP: [${
+          req.socket.remoteAddress
+        }] - Time: [${new Date()}] - Status: [${res.statusCode}]`
+      );
+    });
+    next();
+  });
+  app.use((req, res, next) => {
     const origin = req.headers.origin;
     const allowedOrigins = FRONTEND_URL.split(",");
     if (allowedOrigins.includes(origin)) {
@@ -36,9 +58,6 @@ connectDB().then(()=>{
     }
     next();
   });
-
-
-const SERVER = async () =>{
     app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);
 });
