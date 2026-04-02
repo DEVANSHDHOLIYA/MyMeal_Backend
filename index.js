@@ -6,8 +6,7 @@ import { indexRoute } from './src/routes/index.routes.js';
 const app= express();
 
 
-app.use(express.json());
-app.use('/api/v1',indexRoute);
+
 connectDB().then(()=>{
     console.log('Connected to MongoDB');
     SERVER();
@@ -58,6 +57,8 @@ const SERVER = async () =>{
     }
     next();
   });
+  app.use(express.json());
+app.use('/api/v1',indexRoute);
     app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);
 });
