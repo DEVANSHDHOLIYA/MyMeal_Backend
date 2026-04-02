@@ -21,7 +21,13 @@ const signup = async (req, res,next) => {
         name:req.body.name,
         email:req.body.email,
         password:hashedPassword,
-        Role:Object.values(Roles)[0]
+        Role:Object.values(Roles)[0],
+        city:req.body.city,
+        state:req.body.state,
+        address:req.body.address,
+        pincode:req.body.pincode,
+        country:req.body.country,
+        phoneno:req.body.phoneno
     });
     await OTP.create({
         email:req.body.email,

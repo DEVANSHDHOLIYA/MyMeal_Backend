@@ -33,8 +33,11 @@ const giverating = async (req, res, next) => {
         },
       },
     ]);
+    const avg = total_rating?.[0]?.avgrating || 0;
+    const totalrating = Math.round(avg);
+
     await Vendor.findByIdAndUpdate(req.body.vendor_id, {
-      rating: total_rating[0].avgrating,
+      rating: totalrating,
     });
 
     return res.status(HTTP.SUCCESS).json({
