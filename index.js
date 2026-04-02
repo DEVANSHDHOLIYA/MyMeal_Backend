@@ -23,7 +23,28 @@ connectDB().then(()=>{
 }).catch((err)=>{
     console.error('Error connecting to MongoDB', err);
 });
+ app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    const allowedOrigins = FRONTEND_URL.split(",");
+    if (allowedOrigins.includes(origin)) {
+      res.header("Access-Control-Allow-Origin", origin);
+    }
 
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin,X-Requested-with,Content-Type,Accept,Authorization"
+    );
+    res.header("Access-Control-Allow-Credentials", "true");
+
+    // Expose custom headers to the frontend
+    res.header("Access-Control-Expose-Headers", "X-Error-Message");
+
+    if (req.method == "OPTIONS") {
+      res.header("Access-Control-Allow-Methods", "PUT,POST,PATCH,DELETE,GET");
+      return res.status(200).json({});
+    }
+    next();
+  });
 
 
 const SERVER = async () =>{
