@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { stringvalidation } from "../validator/profile.validator.js";
 import validate from "../middleware/validationMiddleware.js";
-import ratingController from "../controllers/rating.controller.js";
+import {ratingController} from "../controllers/index.js";
 import auth from "../middleware/authmiddleware.js";
 import { optionalResourceIds } from "../validator/auth.js";
 

@@ -210,6 +210,7 @@ const vendorsignup = async (req, res,next) => {
     });
 }
 
+
 const vendorlogin = async (req, res,next) => {
     const vendordata= await Vendor.findOne({email:req.body.email}).select("+password");
     if(!vendordata){

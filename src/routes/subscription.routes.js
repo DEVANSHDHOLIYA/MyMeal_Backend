@@ -1,6 +1,6 @@
 import express from "express";
 import auth from "../middleware/authmiddleware.js";
-import subscriptionCotroller from "../controllers/vendor/subscription.cotroller.js";
+import {subscriptionCotroller} from "../controllers/index.js";
 import validate from "../middleware/validationMiddleware.js";
 import { optionalResourceIds } from "../validator/auth.js";
 const _Router = express.Router({

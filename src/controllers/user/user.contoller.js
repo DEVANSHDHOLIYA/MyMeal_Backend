@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import HTTP from "../../constants/httpStatusCode.js";
-import User from "../../models/user.js";
 import Vendor from "../../models/vendor.js";
-import Rating from "../../models/vendor/vendorrating.js";
 import vendorsubscription from "../../models/vendor/vendorsubscription.js";
 import usersubscription from "../../models/user/usersubscription.js";
 const getvendordata = async (req, res, next) => {

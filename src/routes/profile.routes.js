@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import auth from '../middleware/authmiddleware.js';
-import profileController from '../controllers/profile.controller.js';
-import {companynameValidation, emailValidation, nameValidation, phonenovalidation } from '../validator/auth.js';
+import {profileController} from '../controllers/index.js';
+import {companynameValidation,  nameValidation, phonenovalidation } from '../validator/auth.js';
 import validate from '../middleware/validationMiddleware.js';
 import {stringvalidation} from '../validator/profile.validator.js';
 const _Router = Router({
