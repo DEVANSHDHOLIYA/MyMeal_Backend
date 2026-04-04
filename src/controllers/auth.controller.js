@@ -197,6 +197,12 @@ const vendorsignup = async (req, res,next) => {
     Role:Object.values(Roles)[1],
     phoneno:req.body.phoneno,
     companyname:req.body.companyname,
+    state:req.body.state,
+    city:req.body.city,
+    address:req.body.address,
+    pincode:req.body.pincode,
+    country:req.body.country,
+    upiid:req.body.upiid,
     });
     await OTP.create({
         email:req.body.email,

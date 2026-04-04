@@ -1,6 +1,8 @@
 import User from "../models/user.js";
 import HTTP from "../constants/httpStatusCode.js";
 import Vendor from "../models/vendor.js";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs"; 
 const profile = async (req, res, next) => {
   const Userdata = await User.findById(req.user_id);
   if (!Userdata) {
@@ -38,14 +40,23 @@ const profileupdate = async (req, res, next) => {
     });
 }
   try{
+    const result = await cloudinary.uploader.upload(req.file.path);
     
-    await User.findByIdAndUpdate(req.user_id, { name: req.body.name,state: req.body.state,pincode: req.body.pincode ,address: req.body.address,phoneno: req.body.phoneno,city:req.body.city,country:req.body.country});
+     const avatar = {
+       public_id: result.public_id,
+      url: result.url,
+  };
+    fs.unlink(req.file.path, (err) => {
+      if (err) console.log("Delete error:", err);
+    });
+    await User.findByIdAndUpdate(req.user_id, { name: req.body.name,state: req.body.state,pincode: req.body.pincode ,address: req.body.address,phoneno: req.body.phoneno,city:req.body.city,country:req.body.country,avatar: avatar});
      return res.status(HTTP.SUCCESS).json({
     success: true,
     message: "Profile updated successfully",
   });
   }
   catch(err) {
+    
     return res.status(HTTP.BAD_REQUEST).json({
       success: false,
       message: "Error updating profile",
@@ -62,14 +73,23 @@ const vendor_profileupdate = async (req, res, next) => {
     });
 }
   try{
+     const result = await cloudinary.uploader.upload(req.file.path);
     
-    await Vendor.findByIdAndUpdate(req.user_id, { name: req.body.name,upiid:req.body.upiid,about:req.body.about,pincode: req.body.pincode,companyname: req.body.companyname ,state: req.body.state,address: req.body.address,phoneno: req.body.phoneno,city:req.body.city,country:req.body.country});
+     const avatar = {
+       public_id: result.public_id,
+      url: result.url,
+  };
+    fs.unlink(req.file.path, (err) => {
+      if (err) console.log("Delete error:", err);
+    });
+    await Vendor.findByIdAndUpdate(req.user_id, { name: req.body.name,upiid:req.body.upiid,about:req.body.about,pincode: req.body.pincode,companyname: req.body.companyname ,state: req.body.state,address: req.body.address,phoneno: req.body.phoneno,city:req.body.city,country:req.body.country,avatar: avatar});
      return res.status(HTTP.SUCCESS).json({
     success: true,
     message: "Profile updated successfully",
   });
   }
   catch(err) {
+    console.log(err);
     return res.status(HTTP.BAD_REQUEST).json({
       success: false,
       message: "Error updating profile",

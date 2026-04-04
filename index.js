@@ -1,9 +1,15 @@
 import express from 'express';
-import { FRONTEND_URL, PORT } from './src/config/config.js';
+import { FRONTEND_URL, PORT,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET,CLOUDINARY_NAME } from './src/config/config.js';
 import { connectDB } from './src/Db/database.js';
-
+import { v2 as cloudinary } from 'cloudinary';
 import cors from 'cors';
 import { indexRoute } from './src/routes/index.routes.js';
+
+cloudinary.config({
+  cloud_name: CLOUDINARY_NAME,
+  api_key:CLOUDINARY_API_KEY,
+  api_secret:CLOUDINARY_API_SECRET,
+});
 const app= express();
 
 app.use(cors({
@@ -24,7 +30,7 @@ app.use(cors({
   },
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use('/api/v1',indexRoute);
 connectDB().then(()=>{
     console.log('Connected to MongoDB');
