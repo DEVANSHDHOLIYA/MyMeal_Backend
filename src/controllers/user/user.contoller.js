@@ -35,6 +35,7 @@ const getvendorsubscription = async (req, res, next) => {
     },
     {
       $project: {
+          avatar:1,
           companyname:1,
           phoneno:1,
           rating:1,
