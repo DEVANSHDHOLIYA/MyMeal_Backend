@@ -8,17 +8,17 @@ const userschema = new Schema({
   },
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   email: {
     type: String,
     unique: true,
-    require: true,
+    required: true,
   },
   password: {
     type: String,
     select: false,
-    require: true,
+    required: true,
   },
   address: {
     type: String,
@@ -41,7 +41,7 @@ const userschema = new Schema({
   Role: {
     type: String,
     enum: Object.values(Roles),
-    require: true,
+    required: true,
   },
   isVerified: {
     type: Boolean,

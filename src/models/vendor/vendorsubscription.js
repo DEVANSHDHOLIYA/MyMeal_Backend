@@ -4,18 +4,18 @@ const vendorsubscriptionschema = new mongoose.Schema({
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'vendor',
-        require:true
+        required:true
     },
     duration:{
         type:String,
-        require:true
+        required:true
     }, 
     description:{
         type:String,
     },
     price:{
         type:Number,
-        require:true
+        required:true
     },
     isAvailable:{
         type:Boolean,

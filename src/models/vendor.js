@@ -8,48 +8,58 @@ const vendorschema = new Schema({
   },
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   email: {
     type: String,
     unique: true,
-    require: true,
+    required: true,
   },
   phoneno: {
     type: String,
     unique: true,
-    require: true,
+    required: true,
   },
   companyname: {
     type: String,
     unique: true,
-    require: true,
+    required: true,
   },
   password: {
     type: String,
     select: false,
-    require: true,
+    required: true,
   },
   address: {
     type: String,
+    required: true,
   },
   city: {
     type: String,
+    required: true,
+
   },
   state: {
     type: String,
+    required: true,
+
   },
   country: {
-    type: String,
+    type: String, 
+    required: true
+ 
   },
   pincode: {
     type: Number,
+    required: true,
   },
   about: {
     type: String,
+    required: true,
   },
   upiid: {
     type: String,
+    required: true,
   },
   rating: {
     type: Number,
@@ -60,7 +70,7 @@ const vendorschema = new Schema({
   Role: {
     type: String,
     enum: Object.values(Roles),
-    require: true,
+    required: true,
   },
   isVerified: {
     type: Boolean,

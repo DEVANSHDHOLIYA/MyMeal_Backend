@@ -4,22 +4,22 @@ const ratingschema = new mongoose.Schema({
     vendor_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'vendor',
-        require:true
+        required:true
     },
     user_id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'user',
-        require:true
+        required:true
     },
     rating:{
         type:Number,
         min: 1,
         max: 5,
-        require:true
+        required:true
     }, 
     review:{
         type:String,
-        require:true
+        required:true
     },
     isAvailable:{
         type:Boolean,
