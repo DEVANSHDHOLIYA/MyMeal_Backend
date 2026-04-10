@@ -15,7 +15,7 @@ const mealschema = new mongoose.Schema({
     required: true,
   },
   subscription_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: "vendorsubscription",
    
   },

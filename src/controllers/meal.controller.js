@@ -3,11 +3,14 @@ import HTTP from "../constants/httpStatusCode.js";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 const addmeal = async (req, res, next) => {
+  const subscriptionIds = Array.isArray(req.body.subscription_id)
+  ? req.body.subscription_id
+  : [req.body.subscription_id];
   const mealdata = await Meal.findOne({
     vendor_id: req.user_id,
     meal_date: req.body.meal_date,
     mealtime: req.body.mealtime,
-    subscription_id: req.body.subscription_id,
+    subscription_id: { $in: subscriptionIds },
   });
   if (mealdata) {
     return res.status(HTTP.BAD_REQUEST).json({
