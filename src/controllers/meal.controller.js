@@ -14,9 +14,8 @@ const addmeal = async (req, res, next) => {
       message: "Meal already exists for this date and time",
     });
   }
-  
+
   try {
-    
     const result = await cloudinary.uploader.upload(req.file.path);
     const mealphoto = {
       public_id: result.public_id,
@@ -27,7 +26,7 @@ const addmeal = async (req, res, next) => {
     });
     await Meal.create({
       vendor_id: req.user_id,
-      subscription_id:req.body.subscription_id,
+      subscription_id: req.body.subscription_id,
       meal_date: req.body.meal_date,
       mealtime: req.body.mealtime,
       items: req.body.items,
@@ -40,7 +39,6 @@ const addmeal = async (req, res, next) => {
       message: "Meal added successfully",
     });
   } catch (err) {
-    
     return res.status(HTTP.BAD_REQUEST).json({
       success: false,
       message: "Error adding meal",
@@ -48,18 +46,51 @@ const addmeal = async (req, res, next) => {
   }
 };
 
-const getmeal = async(req,res,next)=>{
-    const mealdata = await Meal.find({vendor_id:req.user_id});
-    if(!mealdata){
-        return res.status(HTTP.NOT_FOUND).json({
-            success:false,
-            message:"No meal found"
-        })
-    }
-    return res.status(HTTP.SUCCESS).json({
-        success:true,
-        data:mealdata
-    })
-}
+const getmeal = async (req, res, next) => {
+  const mealdata = await Meal.find({ vendor_id: req.user_id });
+  if (!mealdata) {
+    return res.status(HTTP.NOT_FOUND).json({
+      success: false,
+      message: "No meal found",
+    });
+  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-export default { addmeal,getmeal };
+  const filteredMeals = mealdata.filter((meal) => {
+    const mealDate = new Date(meal.meal_date);
+    mealDate.setHours(0, 0, 0, 0);
+
+    return mealDate.getTime() === today.getTime();
+  });
+
+  return res.status(HTTP.SUCCESS).json({
+    success: true,
+    data: filteredMeals,
+  });
+};
+
+const getmeal_user = async (req, res, next) => {
+  const mealdata = await Meal.find({ vendor_id: req.params.vendor_id });
+  if (!mealdata) {
+    return res.status(HTTP.NOT_FOUND).json({
+      success: false,
+      message: "No meal found",
+    });
+  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const filteredMeals = mealdata.filter((meal) => {
+    const mealDate = new Date(meal.meal_date);
+    mealDate.setHours(0, 0, 0, 0);
+
+    return mealDate.getTime() === today.getTime();
+  });
+
+  return res.status(HTTP.SUCCESS).json({
+    success: true,
+    data: filteredMeals,
+  });
+};
+export default { addmeal, getmeal, getmeal_user };
