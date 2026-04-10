@@ -97,4 +97,18 @@ const getmeal_user = async (req, res, next) => {
     data: filteredMeals,
   });
 };
-export default { addmeal, getmeal, getmeal_user };
+
+const mealbuydata= async (req, res, next) => {
+  const mealdata = await Meal.findById(req.params.meal_id);
+  if (!mealdata) {
+    return res.status(HTTP.NOT_FOUND).json({
+      success: false,
+      message: "No meal found",
+    });
+  }
+  return res.status(HTTP.SUCCESS).json({
+    success: true,
+    data: mealdata,
+  });  
+}
+export default { addmeal, getmeal, getmeal_user,mealbuydata };

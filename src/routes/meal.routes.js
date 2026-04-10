@@ -18,4 +18,6 @@ _Router.route('/addmeal').post(uploadFile,validate([stringvalidation('items'),st
 _Router.route('/getmeals').get(mealController.getmeal);
 
 _Router.route('/getmeals/:vendor_id').get(validate([optionalResourceIds('vendor_id','param')]),mealController.getmeal_user);
+
+_Router.route('/mealbuydata/:meal_id').get(validate([optionalResourceIds('meal_id','param')]),mealController.mealbuydata);
 export const mealrouter = _Router;
