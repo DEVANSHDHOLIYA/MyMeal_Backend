@@ -7,6 +7,7 @@ const addmeal = async (req, res, next) => {
     vendor_id: req.user_id,
     meal_date: req.body.meal_date,
     mealtime: req.body.mealtime,
+    subscription_id: req.body.subscription_id,
   });
   if (mealdata) {
     return res.status(HTTP.BAD_REQUEST).json({
