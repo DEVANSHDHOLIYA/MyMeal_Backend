@@ -188,7 +188,13 @@ const getsubscriberinfo = async (req, res, next) => {
         })
     }
     const ids= vendorsubdata.map((item)=>item._id);
-    const subsciptiondata = await usersubscription.find({ subscription_id: { $in: ids } }).populate("user_id","name email").populate("subscription_id","duration price");
+    const subsciptiondata = await usersubscription.find({ subscription_id: { $in: ids } })
+        .populate("user_id","name email")
+        .populate("subscription_id","duration price")
+        .populate({
+            path: "selectedMeals.meal_id",
+            select: "meals"
+        });
     if(!subsciptiondata){
         return res.status(HTTP.NOT_FOUND).json({
             success:false,  

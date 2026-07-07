@@ -39,9 +39,20 @@ const usersubscriptionschema = new mongoose.Schema({
     },
     pausedate:{
         type: Date,
-    }
+    },
+    skippedDates: {
+        type: [String],
+        default: []
+    },
+    selectedMeals: [
+        {
+            date: { type: String, required: true },
+            meal_id: { type: mongoose.Schema.Types.ObjectId, ref: 'meals', required: true },
+            option: { type: String, enum: ['primary', 'secondary'], default: 'primary' }
+        }
+    ]
 
 });
 
-const usersubscription = mongoose.model.usersubscription ||mongoose.model("usersubscription", usersubscriptionschema);
+const usersubscription = mongoose.models.usersubscription || mongoose.model("usersubscription", usersubscriptionschema);
 export default usersubscription;

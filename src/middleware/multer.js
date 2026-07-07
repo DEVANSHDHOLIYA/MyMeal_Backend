@@ -23,4 +23,9 @@ const uploadFile = multer({
 
 const singlephoto = uploadFile.single("photo");
 
+export const mealPhotos = uploadFile.fields([
+  { name: "primary", maxCount: 1 },
+  { name: "secondary", maxCount: 1 },
+]);
+
 export default singlephoto;

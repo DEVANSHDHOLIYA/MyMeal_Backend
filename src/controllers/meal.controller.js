@@ -2,47 +2,91 @@ import Meal from "../models/meal.js";
 import HTTP from "../constants/httpStatusCode.js";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import usersubscription from "../models/user/usersubscription.js";
 const addmeal = async (req, res, next) => {
-  const subscriptionIds = Array.isArray(req.body.subscription_id)
-  ? req.body.subscription_id
-  : [req.body.subscription_id];
-  const mealdata = await Meal.findOne({
-    vendor_id: req.user_id,
-    meal_date: req.body.meal_date,
-    mealtime: req.body.mealtime,
-    subscription_id: { $in: subscriptionIds },
-  });
-  if (mealdata) {
-    return res.status(HTTP.BAD_REQUEST).json({
-      success: false,
-      message: "Meal already exists for this date and time",
-    });
-  }
-
   try {
-    const result = await cloudinary.uploader.upload(req.file.path);
-    const mealphoto = {
-      public_id: result.public_id,
-      url: result.url,
-    };
-    fs.unlink(req.file.path, (err) => {
-      if (err) console.log("Delete error:", err);
-    });
-    await Meal.create({
+    const subscriptionIds = Array.isArray(req.body.subscription_id)
+      ? req.body.subscription_id
+      : [req.body.subscription_id];
+
+    const mealdata = await Meal.findOne({
       vendor_id: req.user_id,
-      subscription_id: req.body.subscription_id,
       meal_date: req.body.meal_date,
       mealtime: req.body.mealtime,
-      items: req.body.items,
-      price: req.body.price,
-      isavilable: "true",
-      mealphoto: mealphoto,
+      subscription_id: { $in: subscriptionIds },
     });
+
+    if (mealdata) {
+      return res.status(HTTP.BAD_REQUEST).json({
+        success: false,
+        message: "Meal already exists for this date and time",
+      });
+    }
+
+    if (!req.files || !req.files.primary) {
+      return res.status(400).json({
+        success: false,
+        message: "Primary image is required",
+      });
+    }
+
+    const primaryUpload = await cloudinary.uploader.upload(
+      req.files.primary[0].path
+    );
+
+    let secondaryUpload = null;
+    if (req.files.secondary && req.files.secondary.length > 0) {
+      secondaryUpload = await cloudinary.uploader.upload(
+        req.files.secondary[0].path
+      );
+    }
+
+    fs.unlink(req.files.primary[0].path, () => {});
+    if (req.files.secondary && req.files.secondary.length > 0) {
+      fs.unlink(req.files.secondary[0].path, () => {});
+    }
+
+    
+    const mealsData = {
+      primary: req.body.primary_meal,
+    };
+
+    if (req.body.secondary_meal) {
+      mealsData.secondary = req.body.secondary_meal;
+    }
+
+    // ✅ Prepare mealphoto object
+    const mealphotoData = {
+      primary: {
+        public_id: primaryUpload.public_id,
+        url: primaryUpload.url,
+      },
+    };
+
+    if (secondaryUpload) {
+      mealphotoData.secondary = {
+        public_id: secondaryUpload.public_id,
+        url: secondaryUpload.url,
+      };
+    }
+
+    await Meal.create({
+      vendor_id: req.user_id,
+      subscription_id: subscriptionIds,
+      meal_date: req.body.meal_date,
+      mealtime: req.body.mealtime,
+      meals: mealsData,
+      mealphoto: mealphotoData,
+      price: req.body.price,
+      isavilable: true,
+    });
+
     return res.status(HTTP.SUCCESS).json({
       success: true,
       message: "Meal added successfully",
     });
   } catch (err) {
+    console.log(err);
     return res.status(HTTP.BAD_REQUEST).json({
       success: false,
       message: "Error adding meal",
@@ -98,6 +142,21 @@ const getmeal_user = async (req, res, next) => {
   });
 };
 
+const subscriptionmeal = async (req, res, next) => {
+  const subscriptionid = await usersubscription.find({ user_id:req.user_id},{subscription_id:1,_id:0});
+  const subscriptionmealdata = await Meal.find({ subscription_id: subscriptionid[0].subscription_id });
+  if (!subscriptionmealdata) {
+    return res.status(HTTP.NOT_FOUND).json({
+      success: false,
+      message: "No meal found",
+    });
+  }
+  return res.status(HTTP.SUCCESS).json({
+    success: true,
+    data: subscriptionmealdata,
+  });
+
+};
 const mealbuydata= async (req, res, next) => {
   const mealdata = await Meal.findById(req.params.meal_id);
   if (!mealdata) {
@@ -111,4 +170,4 @@ const mealbuydata= async (req, res, next) => {
     data: mealdata,
   });  
 }
-export default { addmeal, getmeal, getmeal_user,mealbuydata };
+export default { addmeal, getmeal, getmeal_user,mealbuydata ,subscriptionmeal};

@@ -2,8 +2,14 @@ import mongoose from "mongoose";
 
 const mealschema = new mongoose.Schema({
   mealphoto: {
+    primary: {
     public_id: { type: String, required: true },
     url: { type: String, required: true },
+    },
+    secondary: {
+      public_id: { type: String },
+      url: { type: String},
+    },
   },
   vendor_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,9 +25,17 @@ const mealschema = new mongoose.Schema({
     ref: "vendorsubscription",
    
   },
-  items: {
-    type: String,
-    required: true,
+  meals: {
+    primary: {
+      type: String,
+      required: true,
+      isavilable: true,
+      default: true,
+    },
+    secondary: {
+      type: String,
+      isavilable: true,
+    },
   },
   price: {
     type: Number,
@@ -30,7 +44,6 @@ const mealschema = new mongoose.Schema({
   isavilable: {
     type: Boolean,
     default: true,
-    
   },
   mealtime: {
     type: String,

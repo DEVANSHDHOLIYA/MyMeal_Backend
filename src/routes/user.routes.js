@@ -34,4 +34,13 @@ _Router
     validate([stringvalidation("subscription_id")]),
     userController.pausesubscription,
   );
+
+_Router
+  .route("/skiptodaymeal")
+  .post(userController.skiptodaymeal);
+
+_Router
+  .route("/selectdailymeal")
+  .post(userController.selectdailymeal);
+
 export const userrouter = _Router;

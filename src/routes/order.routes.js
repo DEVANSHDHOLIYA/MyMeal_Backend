@@ -13,4 +13,11 @@ const _Router = Router({
 _Router.use(auth);
 
 _Router.route('/addorder').post(validate([stringvalidation('price'),stringvalidation('quantity'),stringvalidation('meal_id'),stringvalidation('total')]),orderController.ordermeal);
+
+_Router.route('/userorders').get(orderController.getuserorders);
+
+_Router.route('/vendororders').get(orderController.getvendororders);
+
+_Router.route('/markdelivered/:order_id').post(orderController.markdelivered);
+
 export const orderrouter = _Router;
